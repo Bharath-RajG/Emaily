@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send({ hi: "there", hello: "Bharath" });
+  res.send({ hello: "Bharath" });
 });
 app.get("/welcome", (req, res) => {
   res.send({ hi: "welcome to Krish Portal" });
