@@ -7,6 +7,12 @@ app.get("/", (req, res) => {
 app.get("/welcome", (req, res) => {
   res.send({ hi: "welcome to Krish Portal" });
 });
+app.get("/About", (req, res) => {
+  res.send({
+    Krish:
+      "Services Group was founded in 2011 by Peruri Srinivasulu, CEO and Chief Architect. Headquartered in Cleveland, Ohio, Krish has expanded with offices in Bangalore, India."
+  });
+});
 
 const PORT = process.env.PORT || 3000;
 
