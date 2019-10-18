@@ -1,21 +1,30 @@
 const express = require("express");
+const authRoutes = require("./routes/authRoutes");
+const keys = require("./config/keys");
+const passport = require("passport");
+const mongoose = require("mongoose");
+const cookieSession = require("cookie-session");
+require("./models/user");
+require("./services/passport");
+
+mongoose.connect(keys.mongoURI);
+
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send({ hello: "Bharath" });
-});
-app.get("/welcome", (req, res) => {
-  res.send({ hi: "welcome to Krish Portal" });
-});
-app.get("/About", (req, res) => {
-  res.send({
-    Krish:
-      "Services Group was founded in 2011 by Peruri Srinivasulu, CEO and Chief Architect. Headquartered in Cleveland, Ohio, Krish has expanded with offices in Bangalore, India."
-  });
-});
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: [keys.cookieKey]
+  })
+);
+
+app.use(passport.initialize());
+
+app.use(passport.session());
+
+authRoutes(app);
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log("Server started on port 3000");
 });
