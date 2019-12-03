@@ -14,8 +14,10 @@ module.exports = app => {
     const surveys = await Survey.find({ _user: req.user.id }).select({
       recipients: false
     });
+
     res.send(surveys);
   });
+
   app.get('/api/surveys/:surveyId/:choice', (req, res) => {
     res.send('Thanks for voting!');
   });
@@ -53,10 +55,8 @@ module.exports = app => {
     res.send({});
   });
 
-  //
   app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
     const { title, subject, body, recipients } = req.body;
-    debugger;
     const survey = new Survey({
       title,
       subject,
@@ -66,13 +66,12 @@ module.exports = app => {
       dateSent: Date.now()
     });
 
-    //To Send an Email
+    // Great place to send an email!
     const mailer = new Mailer(survey, surveyTemplate(survey));
 
     try {
       await mailer.send();
       await survey.save();
-
       req.user.credits -= 1;
       const user = await req.user.save();
 
